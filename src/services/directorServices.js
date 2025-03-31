@@ -8,7 +8,7 @@ const getDirectores = () => {
     });
 }
 
-const createdirector = (data) => {
+const createDirector = (data) => {
     return axiosInstance.post('director', data, {
         header: {
             'Content-type': 'application/json'
@@ -16,7 +16,7 @@ const createdirector = (data) => {
     });
 }
 
-const updatedirector = (directorId, data) => {
+const updateDirector = (directorId, data) => {
     return axiosInstance.put(`director/${directorId}`, data, {
         header: {
             'Content-type': 'application/json'
@@ -25,5 +25,5 @@ const updatedirector = (directorId, data) => {
 }
 
 export {
-    getDirectores, createdirector, updatedirector
+    getDirectores, createDirector, updateDirector
 }

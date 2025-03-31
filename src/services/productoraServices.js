@@ -8,7 +8,7 @@ const getProductoras = () => {
     });
 }
 
-const createproductora = (data) => {
+const createProductora = (data) => {
     return axiosInstance.post('productora', data, {
         header: {
             'Content-type': 'application/json'
@@ -16,7 +16,7 @@ const createproductora = (data) => {
     });
 }
 
-const updateproductora = (productoraId, data) => {
+const updateProductora = (productoraId, data) => {
     return axiosInstance.put(`productora/${productoraId}`, data, {
         header: {
             'Content-type': 'application/json'
@@ -25,5 +25,5 @@ const updateproductora = (productoraId, data) => {
 }
 
 export {
-    getProductoras, createproductora, updateproductora
+    getProductoras, createProductora, updateProductora
 }

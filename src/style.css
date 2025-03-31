@@ -14,11 +14,11 @@ body{
 
 .Agregar {
     border-radius: 100%;
-    bottom: 25px;
-    font-size: 25px;
+    bottom: 20px;
+    font-size: 20px;
     padding: 20px;
     position: fixed;
-    right: 25px;
+    right: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 2);
     transition: 0.3s;
 }
@@ -44,8 +44,5 @@ body{
     align-items: center;
 }
 
-.custom-xmark {
-    color: red;  /* Para asegurarte de que se vea */
-    font-size: 30px; /* Asegura que tenga el tamaño adecuado */
-  }
+
   

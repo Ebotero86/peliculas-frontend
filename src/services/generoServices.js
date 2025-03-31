@@ -8,7 +8,7 @@ const getGeneros = () => {
     });
 }
 
-const creategenero = (data) => {
+const createGenero = (data) => {
     return axiosInstance.post('genero', data, {
         header: {
             'Content-type': 'application/json'
@@ -16,7 +16,7 @@ const creategenero = (data) => {
     });
 }
 
-const updategenero = (generoId, data) => {
+const updateGenero = (generoId, data) => {
     return axiosInstance.put(`genero/${generoId}`, data, {
         header: {
             'Content-type': 'application/json'
@@ -25,5 +25,5 @@ const updategenero = (generoId, data) => {
 }
 
 export {
-    getGeneros, creategenero, updategenero
+    getGeneros, createGenero, updateGenero
 }

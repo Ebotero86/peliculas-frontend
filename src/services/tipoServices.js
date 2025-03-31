@@ -8,7 +8,7 @@ const getTipos = () => {
     });
 }
 
-const createtipo = (data) => {
+const createTipo = (data) => {
     return axiosInstance.post('tipo', data, {
         header: {
             'Content-type': 'application/json'
@@ -16,7 +16,7 @@ const createtipo = (data) => {
     });
 }
 
-const updatetipo = (tipoId, data) => {
+const updateTipo = (tipoId, data) => {
     return axiosInstance.put(`tipo/${tipoId}`, data, {
         header: {
             'Content-type': 'application/json'
@@ -25,5 +25,5 @@ const updatetipo = (tipoId, data) => {
 }
 
 export {
-    getTipos, createtipo, updatetipo
+    getTipos, createTipo, updateTipo
 }

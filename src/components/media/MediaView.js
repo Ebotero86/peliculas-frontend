@@ -32,7 +32,7 @@ export const MediaView = () => {
   }
 
   return (
-    <div className='container-fluid'>
+    <div className='container'>
       <div className="mt-2 mb-2 row row-cols-1 row-cols-md-4 g-4">
         {
           Medias.map((media) =>{
@@ -46,7 +46,7 @@ export const MediaView = () => {
       handleOpenModal={ handleOpenModal }
       listMedias = { listMedias } /> :
       <button className='btn btn-primary Agregar' onClick={ handleOpenModal } >
-      <i class="fa-solid fa-plus"></i>
+      <i className="fa-solid fa-plus"></i>
       </button>  
     }
     </div> 

@@ -24,6 +24,14 @@ const updateMedia = (mediaId, data) => {
     });
 }
 
+const getMediaForId = (mediaId) => {
+    return axiosInstance.get(`media/${mediaId}`, {
+        header: {
+            'Content-type': 'application/json'
+        }
+    });
+}
+
 export {
-    getMedias, createMedia, updateMedia
+    getMedias, createMedia, updateMedia, getMediaForId
 }
