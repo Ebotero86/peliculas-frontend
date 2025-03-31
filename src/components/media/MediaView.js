@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react'
 import { getMedias } from '../../services/mediaServices';
 import { MediaCard } from '../media/MediaCard';
 import { MediaNew } from './MediaNew';
+import Swal from 'sweetalert2';
 
 export const MediaView = () => {
 
@@ -12,13 +13,18 @@ export const MediaView = () => {
   const listMedias = async () =>{
 
     try{
-
+      Swal.fire({
+        allowOutsideClick: false,
+        text: 'Cargando...'
+      });
+      Swal.showLoading();
       const { data } = await getMedias();
-      console.log(data);
+      Swal.close();
       setMedias(data);
 
     }catch(error){
       console.log(error);
+      Swal.close();
     }
   }
 
@@ -35,11 +41,10 @@ export const MediaView = () => {
     <div className='container'>
       <div className="mt-2 mb-2 row row-cols-1 row-cols-md-4 g-4">
         {
-          Medias.map((media) =>{
+          Medias.map((media) => {
             return <MediaCard key = { media._id } media = { media } />
           })
-        }
-    
+        }    
     </div>
     {
       openModal ? <MediaNew

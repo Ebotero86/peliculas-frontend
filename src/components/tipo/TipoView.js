@@ -28,7 +28,7 @@ export const TipoView = () => {
 
   useEffect(() => {
     listTipos();
-  }, []);
+  }, [])
 
   const handleOnChange = (e) => {
     setValuesForm({ ...valuesForm, [e.target.name]: e.target.value });
@@ -70,13 +70,15 @@ export const TipoView = () => {
           <div className="col-lg-6">
             <div className="mb-3">
               <label className="form-label">Nombre</label>
-              <input required name='name' value={name} type="text" className="form-control" onChange={handleOnChange} />
+              <input required name='name' value={name} type="text" className="form-control" 
+               onChange={(e) => handleOnChange(e)} />
             </div>
           </div>
           <div className="col-lg-6">
             <div className="mb-3">
               <label className="form-label">Descripción</label>
-              <textarea required name='description' value={description} className="form-control" onChange={handleOnChange}></textarea>
+              <textarea required name='description' value={description} className="form-control" 
+               onChange={(e) => handleOnChange(e)} />
             </div>
           </div>
         </div>
@@ -95,21 +97,21 @@ export const TipoView = () => {
           </tr>
         </thead>
         <tbody>
-          {tipos.length > 0 && tipos.map((tipo, index) => (
-            <tr key={tipo._id}>
-              <th scope='row'>{index + 1}</th>
-              <td>{tipo.name}</td>
-              <td>{tipo.description}</td>
-              <td>{moment(tipo.createdAt).format('DD-MM-YYYY HH:mm')}</td>
-              <td>{moment(tipo.updatedAt).format('DD-MM-YYYY HH:mm')}</td>
-              <td>
-                <button className='btn btn-success btn-sm me-2' onClick={(e) => handleUpdateTipo(e, tipo)}>Actualizar</button>
-                <button className='btn btn-danger btn-sm'>Eliminar</button>
-              </td>
-            </tr>
-          ))}
+          {
+           tipos.length > 0 && tipos.map((tipo, index) => {
+            return <tr>
+            <th scope='row'>{index + 1}</th>
+            <td>{tipo.name}</td>
+            <td>{tipo.description}</td>
+            <td>{moment(tipo.createdAt).format('DD-MM-YYYY HH:mm')}</td>
+            <td>{moment(tipo.updatedAt).format('DD-MM-YYYY HH:mm')}</td>
+            <td><button className='btn btn-success btn-sm me-2' onClick={(e) => handleUpdateTipo(e, tipo)}>Actualizar</button>
+           </td>
+          </tr>
+          })
+         }            
         </tbody>
       </table>
     </div>
-  );
+  )
 }

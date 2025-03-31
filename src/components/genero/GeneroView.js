@@ -70,13 +70,15 @@ export const GeneroView = () => {
           <div className="col-lg-8">
             <div className="mb-3">
               <label className="form-label">Nombre</label>
-              <input required name='name' value={name} type="text" className="form-control" onChange={handleOnChange} />
+              <input required name='name' value={name} type="text" className="form-control" 
+                onChange={handleOnChange} />
             </div>
           </div>
           <div className="col-lg-4">
             <div className="mb-3">
               <label className="form-label">Estado</label>
-              <select required name='state' value={state} className="form-select" onChange={handleOnChange}>
+              <select required name='state' value={state} className="form-select" 
+                onChange={handleOnChange}>
                 <option value="">--SELECCIONE--</option>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
@@ -99,22 +101,23 @@ export const GeneroView = () => {
           </tr>
         </thead>
         <tbody>
-          {generos.length > 0 && generos.map((genero, index) => (
-            <tr key={genero._id}>
+          {
+           generos.length > 0 && generos.map((genero, index) => {
+            return <tr>
               <th scope='row'>{index + 1}</th>
               <td>{genero.name}</td>
               <td>{genero.state}</td>
               <td>{moment(genero.createdAt).format('DD-MM-YYYY HH:mm')}</td>
               <td>{moment(genero.updatedAt).format('DD-MM-YYYY HH:mm')}</td>
-              <td>
-                <button className='btn btn-success btn-sm me-2' onClick={(e) => handleUpdateGenero(e, genero)}>Actualizar</button>
-                <button className='btn btn-danger btn-sm'>Eliminar</button>
-              </td>
+              <td><button className='btn btn-success btn-sm me-2' onClick={(e) => handleUpdateGenero(e, genero)}>Actualizar</button>
+             </td>
             </tr>
-          ))}
+             })
+           }
+            
         </tbody>
       </table>
     </div>
-  );
+  )
 }
 
