@@ -17,7 +17,7 @@ export const MediaUpdate = () => {
   const [tipos, setTipos] = useState([]);
   const [valoresForm, setValoresForm] = useState([]);
   const { serial = '', titulo = '', sinopsis = '', url = '', imagen = '', anoestreno = '', 
-    descripcion='', genero, productora, director, tipo } = valoresForm
+    descripcion='', generoPrincipal, productora, directorPrincipal, tipo } = valoresForm
 
   const listDirectores = async () => {
     try {
@@ -101,9 +101,9 @@ export const MediaUpdate = () => {
         url: media.url,
         imagen: media.imagen,
         anoestreno: media.anoestreno,
-        genero: media.genero,
+        generoPrincipal: media.genero?._id,
         productora: media.productora,
-        director: media.director,
+        directorPrincipal: media.director,
         tipo: media.tipo,
         descripcion: media.descripcion
       });
@@ -118,35 +118,56 @@ export const MediaUpdate = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+  
     const media = {
-      serial, titulo, sinopsis, url, imagen, anoestreno,
-      genero, descripcion,      
-      director: {
-        _id:director
-      },
-      productora: {
-        _id:productora
-      },
+      serial,
+      titulo,
+      sinopsis,
+      url,
+      imagen,
+      anoestreno,
+      descripcion,
+      generoPrincipal: { _id: generoPrincipal },
+      productora: { _id: productora },
+      directorPrincipal: { _id: directorPrincipal },
+      tipo: { _id: tipo }
     }
-    console.log(media);     
-    
-
+  
+    console.log( media ); 
+  
     try {
-
       Swal.fire({
         allowOutsideClick: false,
         text: 'Cargando...'
       });
       Swal.showLoading();
+      
       const { data } = await updateMedia(mediaId, media);
-      Swal.close();
-
+      console.log( data ); 
+      
+      Swal.close();     
+      getMedia();  
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Película actualizada correctamente',
+        confirmButtonText: 'OK'
+      });
+  
     } catch (error) {
-      console.log(error);
-      Swal.close();
-
+      console.error('Error al actualizar pelicula:', error);
+      Swal.close();  
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo actualizar la película. Inténtalo de nuevo.',
+        confirmButtonText: 'OK'
+      });
     }
   }
+  
 
   return (
     <div className='container-fluid mt-3 mb-2'>
@@ -236,15 +257,15 @@ export const MediaUpdate = () => {
                       <label className='form-label'>Género</label>
                       <select className='form-select'
                         required
-                        name='genero'
-                        value={genero}
+                        name='generoPrincipal'
+                        value={generoPrincipal}
                         onChange={e => handleOnChange(e)}>                      
                         <option value=''>--SELECCIONE--</option>
                         {
-                         generos.map(({ _id, name }) => {
-                          <option key={_id} value={_id}>{name}</option>
-                        })
-                      }
+                         generos.map(({ _id, name }) => (
+                        <option key={_id} value={_id}>{name}</option>
+                        ))
+                       }
                       </select>
                     </div>
                   </div>
@@ -261,10 +282,10 @@ export const MediaUpdate = () => {
                         onChange={e => handleOnChange(e)}>                      
                         <option value=''>--SELECCIONE--</option>
                         {
-                          productoras.map(({ _id, name }) => {
-                          <option key={_id} value={_id}>{name}</option>
-                        })
-                      }
+                          productoras.map(({ _id, name }) => (
+                         <option key={_id} value={_id}>{name}</option>
+                         ))
+                       }
                       </select>
                     </div>
                   </div>
@@ -274,17 +295,15 @@ export const MediaUpdate = () => {
                       <label className='form-label'>Director</label>
                       <select className='form-select'
                         required
-                        name='director'
-                        value={director}
+                        name='directorPrincipal'
+                        value={directorPrincipal}
                         onChange={e => handleOnChange(e)}>                       
                         <option value=''>--SELECCIONE--</option>
                         {
-                          directores.map(({ _id, name }) => {
-                          <option key={_id} value={_id}>
-                            {name}
-                          </option>
-                        })                      
-                      }
+                         directores.map(({ _id, name }) => (
+                         <option key={_id} value={_id}>{name}</option>
+                        ))
+                       }
                       </select>
                     </div>
                   </div>
@@ -299,11 +318,11 @@ export const MediaUpdate = () => {
                         onChange={e => handleOnChange(e)}>                       
                         <option value=''>--SELECCIONE--</option>
                         {
-                          tipos.map(({ _id, name }) => {
+                          tipos.map(({ _id, name }) => (
                           <option key={_id} value={_id}>
                             {name}
                           </option>
-                        })
+                        ))
                       }
                       </select>
                     </div>
