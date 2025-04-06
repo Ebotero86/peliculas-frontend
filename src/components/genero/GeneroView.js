@@ -43,7 +43,7 @@ export const GeneroView = () => {
       });
       Swal.showLoading();
       if (generoSelect) {
-        await updateGenero(valuesForm, generoSelect);
+        await updateGenero(generoSelect, valuesForm );
         setGeneroSelect(null);
       } else {
         await createGenero(valuesForm);

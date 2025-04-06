@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { getMediaForId, updateMedia } from '../../services/mediaServices';
 import { getDirectores } from '../../services/directorServices';
 import { getGeneros } from '../../services/generoServices';
 import { getProductoras } from '../../services/productoraServices';
 import { getTipos } from '../../services/tipoServices';
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export const MediaUpdate = () => {
-  
-  const { mediaId = '' } = useParams();
-  const [media, setMedia] = useState();
-  const [directores, setDirectores] = useState([]);
-  const [generos, setGeneros] = useState([]);
-  const [productoras, setProductoras] = useState([]);
-  const [tipos, setTipos] = useState([]);
-  const [valoresForm, setValoresForm] = useState([]);
-  const { serial = '', titulo = '', sinopsis = '', url = '', imagen = '', anoestreno = '', 
-    descripcion='', generoPrincipal, productora, directorPrincipal, tipo } = valoresForm
+
+  const { MediaId = '' } = useParams();
+  const [ media, setMedia ] = useState();
+  const [ directores, setDirectores ] = useState([]);
+  const [ generos, setGeneros ] = useState([]);
+  const [ productoras, setProductoras ] = useState([]);
+  const [ tipos, setTipos ] = useState([]);
+  const [ valoresForm, setValoresForm ] = useState([]);
+  const { serial = '', titulo = '', sinopsis = '', url = '', imagen = '',
+    anoEstreno = '', generoPrincipal, directorPrincipal, productora, tipo } = valoresForm;
 
   const listDirectores = async () => {
     try {
@@ -26,7 +26,6 @@ export const MediaUpdate = () => {
 
     } catch (error) {
       console.log(error);
-
     }
   }
 
@@ -41,7 +40,6 @@ export const MediaUpdate = () => {
 
     } catch (error) {
       console.log(error);
-
     }
   }
 
@@ -56,7 +54,6 @@ export const MediaUpdate = () => {
 
     } catch (error) {
       console.log(error);
-
     }
   }
 
@@ -68,10 +65,8 @@ export const MediaUpdate = () => {
     try {
       const { data } = await getTipos();
       setTipos(data);
-
     } catch (error) {
       console.log(error);
-
     }
   }
 
@@ -81,7 +76,9 @@ export const MediaUpdate = () => {
 
   const getMedia = async () => {
     try {
-      const { data } = await getMediaForId(mediaId);
+      const { data } = await getMediaForId(MediaId);
+      console.log(data);
+
       setMedia(data);
     } catch (error) {
       console.log(error);
@@ -90,7 +87,7 @@ export const MediaUpdate = () => {
 
   useEffect(() => {
     getMedia();
-  }, [mediaId]);
+  }, [MediaId]);
 
   useEffect(() => {
     if (media) {
@@ -100,16 +97,14 @@ export const MediaUpdate = () => {
         sinopsis: media.sinopsis,
         url: media.url,
         imagen: media.imagen,
-        anoestreno: media.anoestreno,
-        generoPrincipal: media.genero?._id,
+        anoEstreno: media.anoEstreno,
+        generoPrincipal: media.generoPrincipal,
+        directorPrincipal: media.directorPrincipal,
         productora: media.productora,
-        directorPrincipal: media.director,
-        tipo: media.tipo,
-        descripcion: media.descripcion
+        tipo: media.tipo
       });
     }
   }, [media]);
-
 
   const handleOnChange = ({ target }) => {
     const { name, value } = target;
@@ -118,56 +113,37 @@ export const MediaUpdate = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-  
     const media = {
-      serial,
-      titulo,
-      sinopsis,
-      url,
-      imagen,
-      anoestreno,
-      descripcion,
-      generoPrincipal: { _id: generoPrincipal },
-      productora: { _id: productora },
-      directorPrincipal: { _id: directorPrincipal },
-      tipo: { _id: tipo }
+      serial, titulo, sinopsis, url, imagen, anoEstreno,
+      generoPrincipal: { 
+        _id: generoPrincipal 
+      },
+      directorPrincipal: { 
+        _id: directorPrincipal 
+      },
+      productora: { 
+        _id: productora 
+      },
+      tipo: { 
+        _id: tipo 
+      }
     }
-  
-    console.log( media ); 
-  
+    console.log(media);
+
     try {
       Swal.fire({
         allowOutsideClick: false,
         text: 'Cargando...'
       });
       Swal.showLoading();
-      
-      const { data } = await updateMedia(mediaId, media);
-      console.log( data ); 
-      
-      Swal.close();     
-      getMedia();  
-      
-      Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: 'Película actualizada correctamente',
-        confirmButtonText: 'OK'
-      });
-  
+      await updateMedia(MediaId, media);
+      Swal.close();
+
     } catch (error) {
-      console.error('Error al actualizar pelicula:', error);
-      Swal.close();  
-      
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se pudo actualizar la película. Inténtalo de nuevo.',
-        confirmButtonText: 'OK'
-      });
+      console.log(error);
+      Swal.close();
     }
   }
-  
 
   return (
     <div className='container-fluid mt-3 mb-2'>
@@ -177,7 +153,7 @@ export const MediaUpdate = () => {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='mb-4'>
+            <div className='col-md-4'>
               <img src={media?.imagen} />
             </div>
             <div className='col-md-8'>
@@ -185,155 +161,126 @@ export const MediaUpdate = () => {
                 <div className='row'>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Serial</label>
-                      <input type='text' name='serial'
-                        value={serial}
-                        onChange={e => handleOnChange(e)}
-                        required
-                        className='form-control'/>
-                    </div>
+                    <label className="form-label">Serial</label>
+                    <input type="text" name='serial' 
+                    value={serial} 
+                    onChange={e => handleOnChange(e)}
+                    required 
+                    className='form-control' />
                   </div>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Título</label>
-                      <input type='text' name='titulo'
-                        value={titulo}
-                        onChange={e => handleOnChange(e)}
-                        required
-                        className='form-control'/>
-                    </div>
+                    <label className="form-label">Título</label>
+                    <input type="text" name='titulo' 
+                    value={titulo} 
+                    onChange={e => handleOnChange(e)}
+                    required 
+                    className='form-control' />
                   </div>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Sinopsis</label>
-                      <input type='text' name='sinopsis'
-                        value={sinopsis}
-                        onChange={e => handleOnChange(e)}
-                        required
-                        className='form-control'/>
-                    </div>
+                    <label className="form-label">Sinopsis</label>
+                    <input type="text" name='sinopsis' 
+                    value={sinopsis} 
+                    onChange={e => handleOnChange(e)} 
+                    required 
+                    className='form-control' />
                   </div>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>URL</label>
-                      <input type='url'name='url'
-                        value={url}
-                        onChange={e => handleOnChange(e)}
-                        required
-                        className='form-control'/>
-                    </div>
+                    <label className="form-label">URL</label>
+                    <input type="url" name='url' 
+                    value={url} 
+                    onChange={e => handleOnChange(e)}
+                    required 
+                    className='form-control' />
                   </div>
                 </div>
 
                 <div className='row'>
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Imagen</label>
-                      <input type='url' name='imagen'
-                        value={imagen}
-                        onChange={e => handleOnChange(e)}
-                        required
-                        className='form-control'/>
-                    </div>
+                    <label className="form-label">Imagen</label>
+                    <input type="url" name='imagen' 
+                    value={imagen} 
+                    onChange={e => handleOnChange(e)}
+                    required 
+                    className='form-control' />
                   </div>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Año Estreno</label>
-                      <input type='date'name='anoestreno'
-                        value={anoestreno}
-                        onChange={e => handleOnChange(e)}
-                        required
-                        className='form-control'/>
-                    </div>
+                    <label className="form-label">Año Estreno</label>
+                    <input type="number" name='anoEstreno' 
+                    value={anoEstreno} 
+                    onChange={e => handleOnChange(e)}
+                    required 
+                    className='form-control' />
                   </div>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Género</label>
-                      <select className='form-select'
-                        required
-                        name='generoPrincipal'
-                        value={generoPrincipal}
-                        onChange={e => handleOnChange(e)}>                      
-                        <option value=''>--SELECCIONE--</option>
-                        {
-                         generos.map(({ _id, name }) => (
+                    <label className="form-label">Género</label>
+                    <select name="generoPrincipal" 
+                    value={generoPrincipal} 
+                    onChange={e => handleOnChange(e)}
+                    className='form-select' 
+                    required>
+                      <option value="">--SELECCIONE--</option>
+                      {generos.map(({ _id, name }) => (
                         <option key={_id} value={_id}>{name}</option>
-                        ))
-                       }
-                      </select>
-                    </div>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className='col'>
+                    <label className="form-label">Director</label>
+                    <select name="directorPrincipal" 
+                    value={directorPrincipal} 
+                    onChange={e => handleOnChange(e)}
+                    className='form-select' 
+                    required>
+                      <option value="">--SELECCIONE--</option>
+                      {directores.map(({ _id, name }) => (
+                        <option key={_id} value={_id}>{name}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
                 <div className='row'>
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Productora</label>
-                      <select className='form-select'
-                        required
-                        name='productora'
-                        value={productora}
-                        onChange={e => handleOnChange(e)}>                      
-                        <option value=''>--SELECCIONE--</option>
-                        {
-                          productoras.map(({ _id, name }) => (
-                         <option key={_id} value={_id}>{name}</option>
-                         ))
-                       }
-                      </select>
-                    </div>
+                    <label className="form-label">Productora</label>
+                    <select name="productora" 
+                    value={productora} 
+                    onChange={e => handleOnChange(e)}
+                    className='form-select' 
+                    required>
+                      <option value="">--SELECCIONE--</option>
+                      {productoras.map(({ _id, name }) => (
+                        <option key={_id} value={_id}>{name}</option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Director</label>
-                      <select className='form-select'
-                        required
-                        name='directorPrincipal'
-                        value={directorPrincipal}
-                        onChange={e => handleOnChange(e)}>                       
-                        <option value=''>--SELECCIONE--</option>
-                        {
-                         directores.map(({ _id, name }) => (
-                         <option key={_id} value={_id}>{name}</option>
-                        ))
-                       }
-                      </select>
-                    </div>
+                    <label className="form-label">Tipo</label>
+                    <select name="tipo" 
+                    value={tipo} 
+                    onChange={e => handleOnChange(e)}
+                    className='form-select' 
+                    required>
+                      <option value="">--SELECCIONE--</option>
+                      {tipos.map(({ _id, name }) => (
+                        <option key={_id} value={_id}>{name}</option>
+                      ))}
+                    </select>
                   </div>
+                </div>
 
+                <div className='row mt-3'>
                   <div className='col'>
-                    <div className='mb-3'>
-                      <label className='form-label'>Tipo</label>
-                      <select className='form-select'
-                        required
-                        name='tipo'
-                        value={tipo}
-                        onChange={e => handleOnChange(e)}>                       
-                        <option value=''>--SELECCIONE--</option>
-                        {
-                          tipos.map(({ _id, name }) => (
-                          <option key={_id} value={_id}>
-                            {name}
-                          </option>
-                        ))
-                      }
-                      </select>
-                    </div>
+                    <button className="btn btn-primary">Guardar</button>
                   </div>
                 </div>
-                
-                <div className='row'>
-                  <div className='col'>
-                    <button className='btn btn-primary'>Guardar</button>
-                  </div>
-                </div>
+
               </form>
             </div>
           </div>
@@ -342,5 +289,3 @@ export const MediaUpdate = () => {
     </div>
   )
 }
-  
-               

@@ -43,7 +43,7 @@ export const DirectorView = () => {
       });
       Swal.showLoading();
       if (directorSelect) {
-        await updateDirector(valuesForm, directorSelect);
+        await updateDirector( directorSelect, valuesForm);
         setDirectorSelect(null);
       } else {
         await createDirector(valuesForm);

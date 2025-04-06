@@ -7,7 +7,7 @@ export const ProductoraView = () => {
   
   const [valuesForm, setValuesForm] = useState({});
   const [productoras, setProductoras] = useState([]);
-  const { name = '', state = '', Slogan = '', description = '' } = valuesForm;
+  const { name = '', state = '', slogan = '', description = '' } = valuesForm;
   const [productoraSelect, setProductoraSelect] = useState(null);
 
   const listProductoras = async () => {
@@ -36,32 +36,48 @@ export const ProductoraView = () => {
 
   const handleCreateProductora = async (e) => {
     e.preventDefault();
+
+    if (!name.trim()) {
+      Swal.fire('Error', 'El nombre es obligatorio', 'error');
+      return;
+    }
+
+    if (!['Activo', 'Inactivo'].includes(state)) {
+      Swal.fire('Error', 'El estado es obligatorio y debe ser Activo o Inactivo', 'error');
+      return;
+    }
+  
     try {
       Swal.fire({
         allowOutsideClick: false,
         text: 'Guardando...'
       });
       Swal.showLoading();
+
       if (productoraSelect) {
-        await updateProductora(valuesForm, productoraSelect);
+        await updateProductora(productoraSelect, valuesForm );
+        console.log(productoraSelect, valuesForm);
+
         setProductoraSelect(null);
       } else {
         await createProductora(valuesForm);
       }
-      setValuesForm({ name: '', state: '', Slogan: '', description: '' });
+      setValuesForm({ name: '', state: '', slogan: '', description: '' });
       listProductoras();
       Swal.close();
     } catch (error) {
       console.error(error);
       Swal.close();
     }
-  }
+  };
 
   const handleUpdateProductora = (e, productora) => {
     e.preventDefault();
-    setValuesForm({ name: productora.name, state: productora.state, Slogan: productora.Slogan, description: productora.description });
+    console.log('Datos del registro seleccionado', productora);
+    console.log('Cargando valores del registro', { name: productora.name, state: productora.state});
+    setValuesForm({ name: productora.name, state: productora.state, slogan });
     setProductoraSelect(productora._id);
-  }
+  };
 
   return (
     <div className='container-fluid mt-4'>
@@ -88,7 +104,7 @@ export const ProductoraView = () => {
           <div className="col-lg-3">
             <div className="mb-3">
               <label className="form-label">Slogan</label>
-              <input required name='Slogan' value={Slogan} type="text" className="form-control" 
+              <input required name='slogan' value={slogan} type="text" className="form-control" 
               onChange={(e) => handleOnChange(e)} />
             </div>
           </div>
@@ -123,7 +139,7 @@ export const ProductoraView = () => {
               <th scope='row'>{index + 1}</th>
               <td>{productora.name}</td>
               <td>{productora.state}</td>
-              <td>{productora.Slogan}</td>
+              <td>{productora.slogan}</td>
               <td>{productora.description}</td>
               <td>{moment(productora.createdAt).format('DD-MM-YYYY HH:mm')}</td>
               <td>{moment(productora.updatedAt).format('DD-MM-YYYY HH:mm')}</td>

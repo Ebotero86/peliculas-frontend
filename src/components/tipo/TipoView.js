@@ -43,7 +43,7 @@ export const TipoView = () => {
       });
       Swal.showLoading();
       if (tipoSelect) {
-        await updateTipo(valuesForm, tipoSelect);
+        await updateTipo(tipoSelect, valuesForm );
         setTipoSelect(null);
       } else {
         await createTipo(valuesForm);

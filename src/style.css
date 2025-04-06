@@ -5,7 +5,7 @@ body{
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0.2);
     transition: 0.3s;
-    height: 1100px;
+    height: 1200px;
 
 }
 .card:hover {
@@ -43,3 +43,18 @@ body{
     justify-content: space-between;
     align-items: center;
 }
+
+.background-color-page {
+    background-color: gray; 
+    min-height: 100vh; 
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .media-image {
+    max-width: 300px;     /* Limita el ancho */
+    height: 300px;        /* Altura fija */
+    object-fit: cover;    /* Recorta sin deformar */
+    border-radius: 10px;  /* Opcional: bordes redondeados */
+  }
+  
